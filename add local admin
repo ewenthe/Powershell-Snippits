@@ -1,0 +1,19 @@
+# Add local admin account
+# Powershell 5.1
+# Define the new local user credentials
+$username = #insert username
+$password = #insert password - Ensure this is a strong, secure password
+$fullName = #insert full name
+$securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+
+# Create the new local user account
+New-LocalUser -Name $username -Password $securePassword -FullName $fullName -Description "Local Administrator Account for $fullName"
+
+# Set the password to never expire
+Set-LocalUser -Name $username -PasswordNeverExpires $true
+
+# Add the new user to the Administrators group
+Add-LocalGroupMember -Group "Administrators" -Member $username
+
+# Verify the account creation and group membership
+Write-Output "User $username has been created and added to the Administrators group on $env:Computername."
